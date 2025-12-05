@@ -2,6 +2,7 @@
 
 import { Footer } from "./components/Footer";
 import { Header } from "./components/Header";
+import { PageTeste } from "./components/PagesTestes/PageTeste";
 
 function App() {
   return (
@@ -9,7 +10,9 @@ function App() {
       <header>
         <Header />
       </header>
-      <main></main>
+      <main>
+        <PageTeste />
+      </main>
       <footer>
         <Footer />
       </footer>

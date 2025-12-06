@@ -14,6 +14,7 @@ interface PropsCampoInputMascara {
   tipoMascara?: TipoMascara; // Opcional: padrão 'nenhuma'
   placeholder?: string;
   obrigatorio?: boolean;
+  desabilitado?: boolean;
 }
 
 // 3. COMPONENTE PRINCIPAL
@@ -24,6 +25,7 @@ export function CampoInputMascara({
   tipoMascara = "nenhuma", // Padrão: sem máscara
   placeholder = "",
   obrigatorio = false,
+  desabilitado = false,
 }: PropsCampoInputMascara) {
   // 4. ESTADO para mostrar/esconder senha
   const [mostrarSenha, setMostrarSenha] = useState(false);
@@ -127,6 +129,7 @@ export function CampoInputMascara({
           value={valorExibicao}
           onChange={handleChange}
           placeholder={placeholder}
+          disabled={desabilitado}
           className={`
             w-full
             px-3 py-2
@@ -168,9 +171,3 @@ export function CampoInputMascara({
     </div>
   );
 }
-
-// ============================================
-// NOTA: Precisa importar useState do React
-// Adicione no topo do arquivo:
-// import { useState } from 'react';
-// ============================================

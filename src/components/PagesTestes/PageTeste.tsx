@@ -1,214 +1,182 @@
 // Página para testa algumas funcionalidades dos componentes que forem criando, exemplo: ao criar um componente e querer imprimir na tela para vê-lo como ficou, você deve importar o componente criado dentro da div return da função PageTeste abaixo. Depois vá para o arquivo App.tsx importe o componente PageTeste e veja no site como ficou. //
 
-// Página para testar componentes
-import { useState } from "react";
+// ============================================
+// PÁGINA PARA TESTAR COMPONENTES
+// ============================================
 
-// Importar componentes que já criamos
-import { CampoInput } from "../CampoInput";
-import { BotaoPrincipal } from "../Botoes/BotaoPrincipal";
-import { CampoInputMascara } from "../CampoInputMascara";
-import { BotaoSocial } from "../Botoes/BotaoSocial";
+import { useState } from "react";
+import { CheckboxDuplo } from "../CheckBoxDuplo";
+import { CampoDocumento } from "../CampoDocumento";
+import { BotaoCriarConta } from "../Botoes/BotaoCriarConta";
+import { PossuiConta } from "../PossuiConta";
 
 export function PageTeste() {
-  // ===== ESTADOS PARA CAMPOS SIMPLES =====
-  const [nome, setNome] = useState("");
-  const [email, setEmail] = useState("");
+  // ===== ESTADOS PARA OS COMPONENTES =====
+  const [tipoPessoa, setTipoPessoa] = useState<"pf" | "pj">("pf");
+  const [documento, setDocumento] = useState("");
 
-  // ===== ESTADOS PARA CAMPOS COM MÁSCARA =====
-  const [cpf, setCpf] = useState("");
-  const [cnpj, setCnpj] = useState("");
-  const [telefone, setTelefone] = useState("");
-  const [senha, setSenha] = useState("");
-
-  // ===== FUNÇÕES DE EXEMPLO =====
-  const buscarImoveis = () => {
-    alert("Buscando imóveis... 🏠");
-  };
-
-  const salvarFormulario = () => {
-    alert("Formulário salvo! 💾");
-  };
-
-  const loginGoogle = () => {
-    alert("Login com Google... 🔐");
-  };
-
-  const loginMicrosoft = () => {
-    alert("Login com Microsoft... 🔐");
+  // ===== FUNÇÃO DE EXEMPLO =====
+  const handleTeste = () => {
+    alert(`Tipo: ${tipoPessoa}\nDocumento: ${documento}`);
   };
 
   return (
     <div className="p-8 max-w-6xl mx-auto">
       {/* ===== TÍTULO PRINCIPAL ===== */}
       <h1 className="text-3xl font-bold text-blue-600 mb-2">
-        🧪 Página de Teste - Imobilink
+        🧪 Página de Teste - Componentes Criados
       </h1>
       <p className="text-gray-600 mb-8">
-        Teste todos os componentes que vamos criando
+        Testando CheckboxDuplo e CampoDocumento
       </p>
 
-      {/* ===== SEÇÃO 1: CAMPOS SIMPLES ===== */}
+      {/* ===== SEÇÃO 1: CHECKBOX DUPLO ===== */}
       <div className="mb-12 p-6 bg-white rounded-xl shadow">
         <h2 className="text-xl font-bold text-gray-800 mb-4">
-          1. Teste CampoInput (simples)
+          1. CheckboxDuplo (PJ/PF)
         </h2>
 
-        <CampoInput
-          rotulo="Nome completo"
-          tipo="text"
-          valor={nome}
-          aoMudar={setNome}
-          placeholder="Digite seu nome completo"
-          obrigatorio={true}
-        />
+        <div className="mb-2 text-gray-600">
+          <p>Dois botões lado a lado, apenas um pode ser selecionado</p>
+        </div>
 
-        <CampoInput
-          rotulo="E-mail"
-          tipo="email"
-          valor={email}
-          aoMudar={setEmail}
-          placeholder="seu@email.com"
-          obrigatorio={true}
-        />
+        {/* COMPONENTE CHECKBOXDUPLO */}
+        <CheckboxDuplo valor={tipoPessoa} aoMudar={setTipoPessoa} />
 
+        {/* VISUALIZAÇÃO DO ESTADO */}
         <div className="mt-4 p-4 bg-gray-50 rounded-lg">
-          <h3 className="font-medium mb-2">Valores digitados:</h3>
-          <p>
-            <strong>Nome:</strong> {nome || "(vazio)"}
-          </p>
-          <p>
-            <strong>E-mail:</strong> {email || "(vazio)"}
-          </p>
+          <h3 className="font-medium mb-2">📊 Estado atual:</h3>
+          <div className="space-y-2">
+            <p>
+              <strong>Tipo selecionado:</strong>
+              <span
+                className={`ml-2 px-3 py-1 rounded-full text-sm font-semibold ${
+                  tipoPessoa === "pf"
+                    ? "bg-green-100 text-green-800"
+                    : "bg-purple-100 text-purple-800"
+                }`}
+              >
+                {tipoPessoa === "pf"
+                  ? "Pessoa Física (PF)"
+                  : "Pessoa Jurídica (PJ)"}
+              </span>
+            </p>
+            <p>
+              <strong>Valor interno:</strong>
+              <code className="ml-2 px-2 py-1 bg-gray-100 rounded text-sm">
+                "{tipoPessoa}"
+              </code>
+            </p>
+          </div>
         </div>
       </div>
 
-      {/* ===== SEÇÃO 2: BOTÕES ===== */}
+      {/* ===== SEÇÃO 2: CAMPO DOCUMENTO DINÂMICO ===== */}
       <div className="mb-12 p-6 bg-white rounded-xl shadow">
         <h2 className="text-xl font-bold text-gray-800 mb-4">
-          2. Teste Botões
+          2. CampoDocumento (CPF/CNPJ Dinâmico)
         </h2>
 
-        <div className="space-y-4 max-w-md">
-          <BotaoPrincipal texto="🔍 Buscar Imóveis" aoClicar={buscarImoveis} />
-
-          <BotaoPrincipal
-            texto="💾 Salvar Formulário"
-            aoClicar={salvarFormulario}
-          />
-
-          <BotaoPrincipal
-            texto="📞 Contato Rápido"
-            aoClicar={() => alert("Ligando... 📱")}
-          />
+        <div className="mb-4 text-gray-600">
+          <p>Este campo muda automaticamente entre CPF e CNPJ</p>
+          <p className="text-sm">Baseado no tipo de pessoa selecionado acima</p>
         </div>
-      </div>
 
-      {/* ===== SEÇÃO 3: BOTÕES SOCIAIS ===== */}
-      <div className="mb-12 p-6 bg-white rounded-xl shadow">
-        <h2 className="text-xl font-bold text-gray-800 mb-4">
-          3. Teste Botões Sociais
-        </h2>
-
-        <div className="space-y-3 max-w-xs">
-          <BotaoSocial provedor="google" aoClicar={loginGoogle} />
-
-          <BotaoSocial provedor="microsoft" aoClicar={loginMicrosoft} />
-
-          <BotaoSocial
-            provedor="google"
-            texto="Entrar com Google"
-            aoClicar={() => alert("Texto personalizado!")}
-          />
-        </div>
-      </div>
-
-      {/* ===== SEÇÃO 4: CAMPOS COM MÁSCARA ===== */}
-      <div className="mb-12 p-6 bg-white rounded-xl shadow max-w-md">
-        <h2 className="text-xl font-bold text-gray-800 mb-4">
-          4. Teste CampoInputMascara
-        </h2>
-
-        {/* CPF */}
-        <CampoInputMascara
-          rotulo="CPF"
-          valor={cpf}
-          aoMudar={setCpf}
-          tipoMascara="cpf"
-          placeholder="Digite seu CPF"
+        {/* COMPONENTE CAMPODOCUMENTO */}
+        <CampoDocumento
+          tipoPessoa={tipoPessoa}
+          valor={documento}
+          aoMudar={setDocumento}
+          placeholder="Digite seu documento"
           obrigatorio={true}
         />
 
-        {/* CNPJ */}
-        <CampoInputMascara
-          rotulo="CNPJ"
-          valor={cnpj}
-          aoMudar={setCnpj}
-          tipoMascara="cnpj"
-          placeholder="Digite seu CNPJ"
-        />
+        {/* VISUALIZAÇÃO DO ESTADO */}
+        <div className="mt-4 p-4 bg-gray-50 rounded-lg">
+          <h3 className="font-medium mb-2">📊 Informações do documento:</h3>
+          <div className="space-y-3">
+            <div>
+              <p className="font-medium">Tipo atual:</p>
+              <div className="flex items-center mt-1">
+                <span
+                  className={`px-3 py-1 rounded-full text-sm font-semibold ${
+                    tipoPessoa === "pf"
+                      ? "bg-blue-100 text-blue-800"
+                      : "bg-purple-100 text-purple-800"
+                  }`}
+                >
+                  {tipoPessoa === "pf"
+                    ? "CPF (Pessoa Física)"
+                    : "CNPJ (Pessoa Jurídica)"}
+                </span>
+                <span className="ml-3 text-2xl">
+                  {tipoPessoa === "pf" ? "👤" : "🏢"}
+                </span>
+              </div>
+            </div>
 
-        {/* TELEFONE */}
-        <CampoInputMascara
-          rotulo="Telefone"
-          valor={telefone}
-          aoMudar={setTelefone}
-          tipoMascara="telefone"
-          placeholder="(11) 99999-9999"
-        />
+            <div>
+              <p className="font-medium">Documento digitado (com máscara):</p>
+              <code className="block mt-1 px-3 py-2 bg-gray-100 rounded text-sm">
+                {documento || "(vazio)"}
+              </code>
+            </div>
 
-        {/* SENHA */}
-        <CampoInputMascara
-          rotulo="Senha"
-          valor={senha}
-          aoMudar={setSenha}
-          tipoMascara="senha"
-          placeholder="Mínimo 8 caracteres"
-        />
-
-        {/* MOSTRAR VALORES (para ver funcionando) */}
-        <div className="mt-6 p-4 bg-gray-50 rounded-lg text-sm">
-          <h3 className="font-medium mb-2">
-            Valores armazenados (sem máscara):
-          </h3>
-          <p>
-            <strong>CPF:</strong> {cpf || "(vazio)"}
-          </p>
-          <p>
-            <strong>CNPJ:</strong> {cnpj || "(vazio)"}
-          </p>
-          <p>
-            <strong>Telefone:</strong> {telefone || "(vazio)"}
-          </p>
-          <p>
-            <strong>Senha:</strong> {"*".repeat(senha.length) || "(vazio)"}
-          </p>
+            <div>
+              <p className="font-medium">Apenas números (sem máscara):</p>
+              <code className="block mt-1 px-3 py-2 bg-gray-100 rounded text-sm">
+                {documento.replace(/\D/g, "") || "(vazio)"}
+              </code>
+            </div>
+          </div>
         </div>
-
-        {/* DICAS DE TESTE */}
-        <div className="mt-4 text-xs text-gray-500">
-          <p>✅ Teste 1: Digite CPF (12345678901 → 123.456.789-01)</p>
-          <p>✅ Teste 2: Digite Telefone (11999999999 → (11) 99999-9999)</p>
-          <p>✅ Teste 3: Clique no olhinho da senha</p>
+        <BotaoCriarConta />
+        <PossuiConta />
+        <div className="flex"></div>
+        {/* BOTÃO DE TESTE */}
+        <div className="mt-6">
+          <button
+            onClick={handleTeste}
+            className="px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors font-medium"
+          >
+            Testar Valores
+          </button>
+          <p className="mt-2 text-sm text-gray-500">
+            Clique para ver os valores no console/alert
+          </p>
         </div>
       </div>
 
-      {/* ===== SEÇÃO 5: RESUMO ===== */}
-      <div className="p-6 bg-blue-50 rounded-xl border border-blue-200">
-        <h2 className="text-lg font-bold text-blue-800 mb-2">
-          📊 Resumo dos Componentes Criados
+      {/* ===== SEÇÃO 3: RESUMO ===== */}
+      <div className="p-6 bg-green-50 rounded-xl border border-green-200">
+        <h2 className="text-lg font-bold text-green-800 mb-2">
+          ✅ Resumo dos Componentes Criados
         </h2>
-        <ul className="list-disc pl-5 text-blue-700">
-          <li>✅ CampoInput - Campos de texto simples</li>
-          <li>✅ BotaoPrincipal - Botão primário reutilizável</li>
-          <li>✅ BotaoSocial - Botões Google/Microsoft</li>
-          <li>✅ CampoInputMascara - CPF, CNPJ, Telefone, Senha</li>
-          <li>⏳ CampoSelect - Dropdown para "Perfil"</li>
-          <li>⏳ CheckboxCustom - Para termos de uso</li>
-          <li>⏳ CardImovel - Card de imóvel (principal)</li>
+        <ul className="list-disc pl-5 text-green-700 space-y-1">
+          <li>
+            <strong>CheckboxDuplo</strong> - Seleção entre PF/PJ (funcionando
+            ✅)
+          </li>
+          <li>
+            <strong>CampoDocumento</strong> - Campo dinâmico CPF/CNPJ
+            (funcionando ✅)
+          </li>
+          <li>
+            <strong>Próximo:</strong> BotaoCriarConta (botão verde com ícone)
+          </li>
         </ul>
-        <p className="mt-3 text-blue-600">
-          Próximo passo: Criar CampoSelect para o campo "Perfil"
-        </p>
+        <div className="mt-4 p-3 bg-white rounded-lg border border-green-300">
+          <p className="text-green-600 font-medium">
+            🎯 Teste a interação entre os componentes:
+          </p>
+          <ol className="list-decimal pl-5 mt-2 text-green-700 text-sm">
+            <li>Selecione "Pessoa Física" no primeiro componente</li>
+            <li>Veja o segundo componente mostrar campo de CPF</li>
+            <li>Digite um CPF (ex: 12345678901)</li>
+            <li>Mude para "Pessoa Jurídica"</li>
+            <li>Veja o campo mudar automaticamente para CNPJ</li>
+          </ol>
+        </div>
       </div>
     </div>
   );

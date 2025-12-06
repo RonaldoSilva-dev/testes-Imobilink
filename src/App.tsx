@@ -1,8 +1,8 @@
 // Arquivo principal que reune todos os componentes para formar o site //
 
 import { Footer } from "./components/Footer";
+import { FormCadastroCompleto } from "./components/FormCadastroCompleto";
 import { Header } from "./components/Header";
-import { PageTeste } from "./components/PagesTestes/PageTeste";
 
 function App() {
   return (
@@ -11,7 +11,7 @@ function App() {
         <Header />
       </header>
       <main>
-        <PageTeste />
+        <FormCadastroCompleto />
       </main>
       <footer>
         <Footer />
